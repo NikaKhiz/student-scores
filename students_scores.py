@@ -42,12 +42,23 @@ class StudentScores:
         return top_students
     
 
+    def subject_with_lowest_score(self):
+        # Return the subject with the lowest average score
+
+        subjects_avg = self.data[self.subjects].mean()
+        worst_score = subjects_avg.min()
+        worst_subject = subjects_avg[subjects_avg == worst_score]
+        return worst_subject
+    
+
     def analyze(self):
         # Analyze and store values in properties 
 
         self.failed_students = self.students_who_failed()
         self.average_scores = self.average_of_scores_by_semesters()
         self.highest_scores = self.students_with_highest_scores()
+        self.worst_subject = self.subject_with_lowest_score()
+
 
 
 
@@ -60,6 +71,8 @@ class StudentScores:
         print('Average scores by semesters:\n', self.average_scores)
         print('-------------------------------')
         print('Students with highest scores:\n', self.highest_scores)
+        print('-------------------------------')
+        print('Worst subject:\n', self.worst_subject)
         print('-------------------------------')
 
 
