@@ -74,6 +74,18 @@ class StudentScores:
         return json.dumps(display_students, indent=4), len(upgraded_students)
     
 
+    def generate_excel_file_from_fresh_df(self):
+        # Generate an Excel file of average subject scores by semester
+
+        new_df = pd.read_csv('student_scores_random_names.csv')
+        new_df.fillna(0, inplace=True)
+        new_df = new_df.groupby('Semester').mean(numeric_only=True)
+        new_df.reset_index(inplace=True)
+        new_df['Index'] = new_df['Semester'].str.extract('(\d+)').astype(int)
+        new_df.set_index('Index', inplace=True)
+        new_df.to_excel('avg_subject_scores_by_semester.xlsx')
+
+
     def analyze(self):
         # Analyze and store values in properties 
 
@@ -83,6 +95,8 @@ class StudentScores:
         self.worst_subject = self.subject_with_lowest_score()
         self.students_upgraded, self.upgraded_count = self.students_who_upgraded_result_by_semester()
 
+        # Creates fresh excel file filled with average scores by semesters
+        self.generate_excel_file_from_fresh_df()
 
 
 
