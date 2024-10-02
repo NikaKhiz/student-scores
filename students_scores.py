@@ -101,11 +101,10 @@ class StudentScores:
 
 
     def plot_average_scores(self):
-        """Create a bar chart showing average scores per subject."""
-        average_scores = self.data[self.subjects].mean()
+        average_scores = self.average_scores
         
         plt.figure(figsize=(10, 6))
-        average_scores.plot(kind='bar', color='skyblue')
+        average_scores.plot(kind='bar')
         
         plt.title('Average Scores per Subject')
         plt.xlabel('Subjects')
