@@ -1,4 +1,5 @@
 import pandas as pd
+import json
 
 class StudentScores:
     def __init__(self, filepath, subjects):
@@ -51,6 +52,28 @@ class StudentScores:
         return worst_subject
     
 
+    def students_who_upgraded_result_by_semester(self):
+        # Return students who upgraded their scores semester by semester
+
+        grouped_data = self.data.groupby(['Student', 'Semester']).mean(numeric_only=True).reset_index()
+        upgraded_students = []
+        for student, student_data in grouped_data.groupby('Student'):
+            previous_avg = 0
+            for row in student_data.itertuples(index=False):
+                current_avg = (row.Math + row.Physics + row.Chemistry + row.Biology + row.English) / len(self.subjects)
+                if current_avg > previous_avg and student not in upgraded_students:
+                    upgraded_students.append(student)
+                previous_avg = current_avg
+
+        # shrink generated data
+        if len(upgraded_students) > 20:
+            display_students = upgraded_students[:20] + ["..."] + upgraded_students[-20:]
+        else:
+            display_students = upgraded_students
+            
+        return json.dumps(display_students, indent=4), len(upgraded_students)
+    
+
     def analyze(self):
         # Analyze and store values in properties 
 
@@ -58,6 +81,8 @@ class StudentScores:
         self.average_scores = self.average_of_scores_by_semesters()
         self.highest_scores = self.students_with_highest_scores()
         self.worst_subject = self.subject_with_lowest_score()
+        self.students_upgraded, self.upgraded_count = self.students_who_upgraded_result_by_semester()
+
 
 
 
@@ -73,6 +98,9 @@ class StudentScores:
         print('Students with highest scores:\n', self.highest_scores)
         print('-------------------------------')
         print('Worst subject:\n', self.worst_subject)
+        print('-------------------------------')
+        print(f'Students who have upgraded their scores: {self.students_upgraded}')
+        print(f'Total number of students who have upgraded their scores: {self.upgraded_count}')
         print('-------------------------------')
 
 
