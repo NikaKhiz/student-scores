@@ -1,5 +1,6 @@
-import pandas as pd
 import json
+import pandas as pd
+import matplotlib.pyplot as plt
 
 class StudentScores:
     def __init__(self, filepath, subjects):
@@ -99,6 +100,21 @@ class StudentScores:
         self.generate_excel_file_from_fresh_df()
 
 
+    def plot_average_scores(self):
+        """Create a bar chart showing average scores per subject."""
+        average_scores = self.data[self.subjects].mean()
+        
+        plt.figure(figsize=(10, 6))
+        average_scores.plot(kind='bar', color='skyblue')
+        
+        plt.title('Average Scores per Subject')
+        plt.xlabel('Subjects')
+        plt.ylabel('Average Score')
+        plt.xticks(rotation=45)
+        plt.grid(axis='y', linestyle='--', alpha=0.5)
+        plt.savefig('average_scores_per_subject.png')
+        plt.close()
+
 
 
 
@@ -116,6 +132,10 @@ class StudentScores:
         print(f'Students who have upgraded their scores: {self.students_upgraded}')
         print(f'Total number of students who have upgraded their scores: {self.upgraded_count}')
         print('-------------------------------')
+
+        # generates bar chart png file showing avg scores per subject. 
+        self.plot_average_scores()
+
 
 
 def main():
