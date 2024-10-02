@@ -24,18 +24,28 @@ class StudentScores:
         condition = (self.data[self.subjects] < 50).any(axis=1)
         failed_students = self.data[condition]
         return failed_students.drop_duplicates(subset='Student')
+    
+
+    def average_of_scores_by_semesters(self):
+        # Return average scores grouped by semester
+
+        return self.data.groupby('Semester').mean(numeric_only=True)
 
 
     def analyze(self):
         # Analyze and store values in properties 
 
         self.failed_students = self.students_who_failed()
+        self.average_scores = self.average_of_scores_by_semesters()
+
 
 
     def display_analyzed_data(self):
         # Print the results
 
         print('Students who didn\'t pass exams:\n', self.failed_students)
+        print('-------------------------------')
+        print('Average scores by semesters:\n', self.average_scores)
         print('-------------------------------')
 
 
