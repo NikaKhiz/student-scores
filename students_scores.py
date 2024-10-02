@@ -115,6 +115,19 @@ class StudentScores:
         plt.close()
 
 
+    def plot_total_average_score_by_semester(self):
+        # Calculate the average score for each semester
+        self.data['Total'] = self.data[self.subjects].sum(axis=1)
+        average_scores_by_semester = self.data.groupby('Semester')['Total'].mean()
+        plt.figure(figsize=(10, 6))
+        average_scores_by_semester.plot(kind='line', marker='D', color='blue')
+
+        plt.title('Average Overall Score by Semester')
+        plt.xlabel('Semester')
+        plt.ylabel('Average Score')
+        plt.grid()
+        plt.savefig('total_avg_scores_by_semester.png')
+        plt.close()
 
 
     def display_analyzed_data(self):
@@ -134,6 +147,9 @@ class StudentScores:
 
         # generates bar chart png file showing avg scores per subject. 
         self.plot_average_scores()
+        # generate line chart png file showing total average scores by semesters
+        self.plot_total_average_score_by_semester()
+
 
 
 
