@@ -79,7 +79,6 @@ class StudentScores:
         # Generate an Excel file of average subject scores by semester
 
         new_df = pd.read_csv('student_scores_random_names.csv')
-        new_df.fillna(0, inplace=True)
         new_df = new_df.groupby('Semester').mean(numeric_only=True)
         new_df.reset_index(inplace=True)
         new_df['Index'] = new_df['Semester'].str.extract('(\d+)').astype(int)
