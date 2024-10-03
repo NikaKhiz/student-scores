@@ -34,14 +34,15 @@ class StudentScores:
         return self.data.groupby('Semester').mean(numeric_only=True)
 
 
-    def students_with_highest_scores(self):
-        # Return students with the highest total scores
+    def students_with_highest_average_scores(self):
 
-        self.data['Total'] = self.data[self.subjects].sum(axis=1)
-        total = self.data.groupby('Student')['Total'].sum()
-        max_score = total.max()
-        top_students = total[total == max_score]
+        self.data['Average'] = self.data[self.subjects].mean(axis=1)
+        average_scores = self.data.groupby('Student')['Average'].mean()
+        max_average = average_scores.max()
+        top_students = average_scores[average_scores == max_average]
+    
         return top_students
+
     
 
     def subject_with_lowest_score(self):
@@ -92,7 +93,7 @@ class StudentScores:
 
         self.failed_students = self.students_who_failed()
         self.average_scores = self.average_of_scores_by_semesters()
-        self.highest_scores = self.students_with_highest_scores()
+        self.highest_scores = self.students_with_highest_average_scores()
         self.worst_subject = self.subject_with_lowest_score()
         self.students_upgraded, self.upgraded_count = self.students_who_upgraded_result_by_semester()
 
@@ -137,7 +138,7 @@ class StudentScores:
         print('-------------------------------')
         print('Average scores by semesters:\n', self.average_scores)
         print('-------------------------------')
-        print('Students with highest scores:\n', self.highest_scores)
+        print('Students with highest average scores:\n', self.highest_scores)
         print('-------------------------------')
         print('Worst subject:\n', self.worst_subject)
         print('-------------------------------')
