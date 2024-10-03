@@ -18,7 +18,6 @@ class StudentScores:
     def clean_data(self):
         # Convert subject scores to numeric and fill NaN values with 0
         self.data[self.subjects] = self.data[self.subjects].apply(pd.to_numeric, errors='coerce')
-        self.data.fillna(0, inplace=True)
 
 
     def students_who_failed(self):
@@ -36,8 +35,8 @@ class StudentScores:
 
     def students_with_highest_average_scores(self):
 
-        self.data['Average'] = self.data[self.subjects].mean(axis=1)
-        average_scores = self.data.groupby('Student')['Average'].mean()
+        self.data['Average'] = self.data[self.subjects].mean(axis=1, numeric_only=True)
+        average_scores = self.data.groupby('Student')['Average'].mean(numeric_only=True)
         max_average = average_scores.max()
         top_students = average_scores[average_scores == max_average]
     
@@ -48,7 +47,7 @@ class StudentScores:
     def subject_with_lowest_score(self):
         # Return the subject with the lowest average score
 
-        subjects_avg = self.data[self.subjects].mean()
+        subjects_avg = self.data[self.subjects].mean(numeric_only=True)
         worst_score = subjects_avg.min()
         worst_subject = subjects_avg[subjects_avg == worst_score]
         return worst_subject
@@ -68,8 +67,8 @@ class StudentScores:
                 previous_avg = current_avg
 
         # shrink generated data
-        if len(upgraded_students) > 20:
-            display_students = upgraded_students[:20] + ["..."] + upgraded_students[-20:]
+        if len(upgraded_students) > 30:
+            display_students = upgraded_students[:10] + ["..."] + upgraded_students[-10:]
         else:
             display_students = upgraded_students
             
